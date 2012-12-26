@@ -77,7 +77,8 @@ enum HttpMethodType {
 
   /** Gets a URI with no query parameters specified. */
   private static URI getUri(HttpRequestBuilder builder) throws URISyntaxException {
-    return URIUtils.createURI(builder.getScheme(), builder.getHost(), -1, builder.getRelativePath(), null, null);
+    return URIUtils.createURI(builder.getScheme(), builder.getHost(), -1, builder.getRelativePath(),
+        null, null);
   }
 
   /** Gets a URI with parameters specified as query string parameters. */
@@ -87,7 +88,8 @@ enum HttpMethodType {
     if (queryString != null && queryString.length() == 0) {
       queryString = null;
     }
-    return URIUtils.createURI(builder.getScheme(), builder.getHost(), -1, builder.getRelativePath(), queryString, null);
+    return URIUtils.createURI(builder.getScheme(), builder.getHost(), -1, builder.getRelativePath(),
+        queryString, null);
   }
 
   private static void addHeaders(HttpMessage message, HttpRequestBuilder builder) {
@@ -102,7 +104,8 @@ enum HttpMethodType {
   }
 
   /** Adds all but the last method argument as parameters of HTTP request object. */
-  private static void addParams(HttpEntityEnclosingRequestBase request, HttpRequestBuilder builder) {
+  private static void addParams(HttpEntityEnclosingRequestBase request,
+      HttpRequestBuilder builder) {
     Method method = builder.getMethod();
     Object[] args = builder.getArgs();
     Class<?>[] parameterTypes = method.getParameterTypes();
@@ -137,12 +140,10 @@ enum HttpMethodType {
     } else {
       try {
         if (builder.getSingleEntity() != null) {
-          final TypedBytesEntity entity = new TypedBytesEntity(builder.getSingleEntity());
+          TypedBytesEntity entity = new TypedBytesEntity(builder.getSingleEntity());
           request.setEntity(entity);
-          request.addHeader(HTTP.CONTENT_TYPE, entity.getMimeType().mimeName());
         } else {
           List<NameValuePair> paramList = builder.getParamList(true);
-          // TODO: Use specified encoding. (See CallbackResponseHandler et al)
           request.setEntity(new UrlEncodedFormEntity(paramList, HTTP.UTF_8));
         }
       } catch (UnsupportedEncodingException e) {
@@ -152,11 +153,13 @@ enum HttpMethodType {
   }
 
   /** Returns true if the parameters contain a file upload. */
-  private static boolean useMultipart(Class<?>[] parameterTypes, Annotation[][] parameterAnnotations) {
+  private static boolean useMultipart(Class<?>[] parameterTypes,
+      Annotation[][] parameterAnnotations) {
     for (int i = 0; i < parameterTypes.length; i++) {
       Class<?> parameterType = parameterTypes[i];
       Annotation[] annotations = parameterAnnotations[i];
-      if (TypedBytes.class.isAssignableFrom(parameterType) && !hasSingleEntityAnnotation(annotations)) {
+      if (TypedBytes.class.isAssignableFrom(parameterType) && !hasSingleEntityAnnotation(
+          annotations)) {
         return true;
       }
     }
