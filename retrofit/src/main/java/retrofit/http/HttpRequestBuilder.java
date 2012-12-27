@@ -22,7 +22,7 @@ import static retrofit.http.RestAdapter.MethodDetails;
  * {@code apiUrl} in the form of "path/to/url/{id}/action" where a parameter annotated with
  * {@code @Named("id")} is inserted into the url.  Note that this replacement can be recursive if:
  * <ol>
- * <li>Multiple sets of brackets are nested ("path/to/{{key}a}.</li>
+ * <li>Multiple sets of brackets are parent ("path/to/{{key}a}.</li>
  * <li>The order of {@link Named @Named} values go from innermost to outermost.</li>
  * <li>The values replaced correspond to {@link Named @Named} parameters.</li>
  * </ol>
